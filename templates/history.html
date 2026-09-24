@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+
+{% block title %}
+Transaction History | ExpenseFlow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <!-- =========================
+         Header
+    ========================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="page-label">
+                TRANSACTIONS
+            </p>
+
+            <h1>
+                Transaction history
+            </h1>
+
+            <p class="page-description">
+                View and manage all your income and expenses.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('add_transaction') }}"
+            class="primary-button"
+        >
+            <span>+</span>
+            Add Transaction
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         Filters
+    ========================== -->
+
+    <div class="filter-card">
+
+        <form
+            action="{{ url_for('history') }}"
+            method="GET"
+            class="filter-form"
+        >
+
+            <!-- Search -->
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request.args.get('search', '') }}"
+                    placeholder="Search transactions..."
+                >
+
+            </div>
+
+
+            <!-- Category -->
+
+            <select
+                name="category"
+                class="filter-select"
+            >
+
+                <option value="">
+                    All categories
+                </option>
+
+                <option
+                    value="Food"
+                    {% if request.args.get('category') == 'Food' %}selected{% endif %}
+                >
+                    Food
+                </option>
+
+                <option
+                    value="Transport"
+                    {% if request.args.get('category') == 'Transport' %}selected{% endif %}
+                >
+                    Transport
+                </option>
+
+                <option
+                    value="Shopping"
+                    {% if request.args.get('category') == 'Shopping' %}selected{% endif %}
+                >
+                    Shopping
+                </option>
+
+                <option
+                    value="Education"
+                    {% if request.args.get('category') == 'Education' %}selected{% endif %}
+                >
+                    Education
+                </option>
+
+                <option
+                    value="Entertainment"
+                    {% if request.args.get('category') == 'Entertainment' %}selected{% endif %}
+                >
+                    Entertainment
+                </option>
+
+                <option
+                    value="Bills"
+                    {% if request.args.get('category') == 'Bills' %}selected{% endif %}
+                >
+                    Bills
+                </option>
+
+                <option
+                    value="Health"
+                    {% if request.args.get('category') == 'Health' %}selected{% endif %}
+                >
+                    Health
+                </option>
+
+                <option
+                    value="Salary"
+                    {% if request.args.get('category') == 'Salary' %}selected{% endif %}
+                >
+                    Salary
+                </option>
+
+                <option
+                    value="Freelance"
+                    {% if request.args.get('category') == 'Freelance' %}selected{% endif %}
+                >
+                    Freelance
+                </option>
+
+                <option
+                    value="Other"
+                    {% if request.args.get('category') == 'Other' %}selected{% endif %}
+                >
+                    Other
+                </option>
+
+            </select>
+
+
+            <!-- Type -->
+
+            <select
+                name="type"
+                class="filter-select"
+            >
+
+                <option value="">
+                    All types
+                </option>
+
+                <option
+                    value="income"
+                    {% if request.args.get('type') == 'income' %}selected{% endif %}
+                >
+                    Income
+                </option>
+
+                <option
+                    value="expense"
+                    {% if request.args.get('type') == 'expense' %}selected{% endif %}
+                >
+                    Expense
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="secondary-button"
+            >
+                Filter
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         Transactions
+    ========================== -->
+
+    <div class="history-card">
+
+        {% if transactions %}
+
+            <div class="history-table-wrapper">
+
+                <table class="history-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Transaction
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th class="amount-column">
+                                Amount
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for transaction in transactions %}
+
+                            <tr>
+
+                                <!-- Transaction -->
+
+                                <td>
+
+                                    <div class="table-transaction">
+
+                                        <div
+                                            class="transaction-icon
+                                            {% if transaction.type == 'income' %}
+                                                transaction-income
+                                            {% else %}
+                                                transaction-expense
+                                            {% endif %}"
+                                        >
+
+                                            {% if transaction.type == 'income' %}
+                                                ↗
+                                            {% else %}
+                                                ↘
+                                            {% endif %}
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                {{ transaction.title }}
+                                            </strong>
+
+                                            {% if transaction.description %}
+
+                                                <small>
+                                                    {{ transaction.description }}
+                                                </small>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Category -->
+
+                                <td>
+
+                                    <span class="category-badge">
+                                        {{ transaction.category }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Date -->
+
+                                <td>
+                                    {{ transaction.transaction_date }}
+                                </td>
+
+
+                                <!-- Type -->
+
+                                <td>
+
+                                    {% if transaction.type == 'income' %}
+
+                                        <span class="type-badge income-badge">
+                                            Income
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="type-badge expense-badge">
+                                            Expense
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Amount -->
+
+                                <td class="amount-column">
+
+                                    <span
+                                        class="
+                                        {% if transaction.type == 'income' %}
+                                            amount-income
+                                        {% else %}
+                                            amount-expense
+                                        {% endif %}
+                                        "
+                                    >
+
+                                        {% if transaction.type == 'income' %}
+                                            +
+                                        {% else %}
+                                            -
+                                        {% endif %}
+
+                                        ₹{{ "%.2f"|format(transaction.amount) }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Delete -->
+
+                                <td>
+
+                                    <form
+                                        action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this transaction?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="delete-button"
+                                            title="Delete transaction"
+                                        >
+                                            ×
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <!-- Empty State -->
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ₹
+                </div>
+
+                <h3>
+                    No transactions found
+                </h3>
+
+                <p>
+                    Try changing your filters or add a new
+                    transaction.
+                </p>
+
+                <a
+                    href="{{ url_for('add_transaction') }}"
+                    class="primary-button"
+                >
+                    Add Transaction
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Transaction | ExpenseFlow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container narrow-container">
+
+    <!-- =========================
+         Page Header
+    ========================== -->
+
+    <div class="form-page-header">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="back-link"
+        >
+            ← Back to dashboard
+        </a>
+
+        <p class="page-label">
+            TRANSACTION
+        </p>
+
+        <h1>
+            Add a transaction
+        </h1>
+
+        <p class="page-description">
+            Record your income or expense to keep your
+            finances organized.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         Transaction Form
+    ========================== -->
+
+    <div class="form-card">
+
+        <form
+            action="{{ url_for('add_transaction') }}"
+            method="POST"
+            class="main-form"
+        >
+
+            <!-- Transaction Type -->
+
+            <div class="form-group">
+
+                <label>
+                    Transaction type
+                </label>
+
+                <div class="type-selector">
+
+                    <label class="type-option">
+
+                        <input
+                            type="radio"
+                            name="type"
+                            value="expense"
+                            checked
+                        >
+
+                        <span class="type-option-content">
+
+                            <span class="type-option-icon expense-option">
+                                ↘
+                            </span>
+
+                            <span>
+                                <strong>Expense</strong>
+                                <small>Money you spent</small>
+                            </span>
+
+                        </span>
+
+                    </label>
+
+
+                    <label class="type-option">
+
+                        <input
+                            type="radio"
+                            name="type"
+                            value="income"
+                        >
+
+                        <span class="type-option-content">
+
+                            <span class="type-option-icon income-option">
+                                ↗
+                            </span>
+
+                            <span>
+                                <strong>Income</strong>
+                                <small>Money you received</small>
+                            </span>
+
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <div class="form-group">
+
+                <label for="title">
+                    Title
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="e.g. Grocery shopping"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Amount -->
+
+            <div class="form-group">
+
+                <label for="amount">
+                    Amount
+                </label>
+
+                <div class="amount-input">
+
+                    <span>₹</span>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="0.00"
+                        min="0.01"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="" disabled selected>
+                        Select a category
+                    </option>
+
+                    <option value="Food">
+                        Food
+                    </option>
+
+                    <option value="Transport">
+                        Transport
+                    </option>
+
+                    <option value="Shopping">
+                        Shopping
+                    </option>
+
+                    <option value="Education">
+                        Education
+                    </option>
+
+                    <option value="Entertainment">
+                        Entertainment
+                    </option>
+
+                    <option value="Bills">
+                        Bills
+                    </option>
+
+                    <option value="Health">
+                        Health
+                    </option>
+
+                    <option value="Salary">
+                        Salary
+                    </option>
+
+                    <option value="Freelance">
+                        Freelance
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Date -->
+
+            <div class="form-group">
+
+                <label for="transaction_date">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="transaction_date"
+                    name="transaction_date"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                    <span class="optional">
+                        Optional
+                    </span>
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                    placeholder="Add a short note about this transaction..."
+                    maxlength="500"
+                ></textarea>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="secondary-button"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Transaction
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- Automatically set today's date -->
+
+<script>
+
+    const dateInput =
+        document.getElementById("transaction_date");
+
+    if (dateInput && !dateInput.value) {
+
+        const today =
+            new Date().toISOString().split("T")[0];
+
+        dateInput.value = today;
+
+    }
+
+</script>
+
+{% endblock %}

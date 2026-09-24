@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile | ExpenseFlow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container narrow-container">
+
+    <!-- =========================
+         Header
+    ========================== -->
+
+    <div class="form-page-header">
+
+        <p class="page-label">
+            ACCOUNT
+        </p>
+
+        <h1>
+            Profile
+        </h1>
+
+        <p class="page-description">
+            Manage your account information.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         Profile Card
+    ========================== -->
+
+    <div class="profile-card">
+
+        <!-- Profile Header -->
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                {% if user and user.name %}
+
+                    {{ user.name[0]|upper }}
+
+                {% else %}
+
+                    U
+
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    {% if user %}
+                        {{ user.name }}
+                    {% else %}
+                        User
+                    {% endif %}
+                </h2>
+
+                <p>
+                    Personal Expense Manager
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <div class="profile-divider"></div>
+
+
+        <!-- Account Information -->
+
+        <div class="profile-section">
+
+            <h3>
+                Account information
+            </h3>
+
+
+            <div class="profile-info-grid">
+
+                <!-- Name -->
+
+                <div class="profile-info">
+
+                    <span class="profile-info-label">
+                        Full name
+                    </span>
+
+                    <strong>
+                        {% if user %}
+                            {{ user.name }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="profile-info">
+
+                    <span class="profile-info-label">
+                        Email address
+                    </span>
+
+                    <strong>
+                        {% if user %}
+                            {{ user.email }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+
+                <!-- Account Created -->
+
+                <div class="profile-info">
+
+                    <span class="profile-info-label">
+                        Account created
+                    </span>
+
+                    <strong>
+                        {% if user and user.created_at %}
+                            {{ user.created_at }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+
+                <!-- Account Type -->
+
+                <div class="profile-info">
+
+                    <span class="profile-info-label">
+                        Account type
+                    </span>
+
+                    <strong>
+                        Personal
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <div class="profile-divider"></div>
+
+
+        <!-- Account Actions -->
+
+        <div class="profile-section">
+
+            <h3>
+                Account actions
+            </h3>
+
+            <p class="profile-action-description">
+                Sign out of your ExpenseFlow account.
+            </p>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="danger-button"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
